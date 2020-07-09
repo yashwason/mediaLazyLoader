@@ -1,16 +1,16 @@
 body{
     text-align: center;
 }
-body *{
-    display: block;
-    margin: 20px auto;
-}
 
+
+picture,
 .img-container{
+    background: #d4d4d4;
+    margin: 20px auto;
+    display: block;
     height: 400px;
     width: 600px;
-    background: #d4d4d4;
 }
 img.lazy{
-    height: 100%;
+    width: 100%;
 }

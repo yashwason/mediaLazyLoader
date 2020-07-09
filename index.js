@@ -1,22 +1,20 @@
-document.onload = setupImageLazyLoading();
+document.onload = setupLazyLoading();
 
 
-function setupImageLazyLoading(){    
-    const lazyloadImages = document.querySelectorAll(`img.lazy`);
+function setupLazyLoading(){    
+    const elemsWithResourcesToLazyLoad = document.querySelectorAll(`.lazy`);
 
     if(`IntersectionObserver` in window){
-        const imageObserver = new IntersectionObserver(function(entries, observer){
+        const lazyElemObserver = new IntersectionObserver((entries, observer) => {
             entries.forEach((entry) => {
                 if(entry.isIntersecting){
-                    console.log(entry.target);
-
                     changeElemAttributes(entry.target);
-                    imageObserver.unobserve(entry.target);
+                    lazyElemObserver.unobserve(entry.target);
                 }
             });
         }, { rootMargin: `0px 0px 70% 0px` });
   
-        lazyloadImages.forEach((image) => imageObserver.observe(image));
+        elemsWithResourcesToLazyLoad.forEach((elem) => lazyElemObserver.observe(elem));
     }
     else{
         let lazyloadThrottleTimeout;
@@ -25,11 +23,11 @@ function setupImageLazyLoading(){
             if(lazyloadThrottleTimeout) clearTimeout(lazyloadThrottleTimeout);
   
             lazyloadThrottleTimeout = setTimeout(() => {
-                lazyloadImages.forEach((img) => {
-                    if(img.offsetTop < (window.pageYOffset + (window.innerHeight * 1.7) )) changeElemAttributes(img);
+                elemsWithResourcesToLazyLoad.forEach((elem) => {
+                    if(elem.offsetTop < (window.pageYOffset + (window.innerHeight * 1.7) )) changeElemAttributes(elem);
                 });
 
-                if(lazyloadImages.length == 0){ 
+                if(elemsWithResourcesToLazyLoad.length === 0){ 
                     document.removeEventListener("scroll", lazyload);
                     window.removeEventListener("resize", lazyload);
                     window.removeEventListener("orientationChange", lazyload);
@@ -43,10 +41,33 @@ function setupImageLazyLoading(){
     }
 }
 
-function changeElemAttributes(img){
-    if(img.dataset.src){
-        img.src = img.dataset.src;
-        img.classList.remove('lazy');
-        img.removeAttribute(`data-src`);
+function changeElemAttributes(elem){
+    removeLazyClass(elem);
+    
+    const childSOURCEElems = elem.querySelectorAll(`source`);
+    const childIMGElems = elem.querySelectorAll(`img`);
+    
+    changeSrcAndSrcsetAttr(elem);
+
+    if(childIMGElems.length) childIMGElems.forEach((IMGElem) => changeSrcAndSrcsetAttr(IMGElem));
+    if(childSOURCEElems.length) childSOURCEElems.forEach((SOURCEElem) => changeSrcAndSrcsetAttr(SOURCEElem));
+}
+
+function useThenRemoveDataAttribute(elem, attr, dataAttr){
+    elem.setAttribute(attr, dataAttr);
+    elem.removeAttribute(dataAttr);
+}
+
+function changeSrcAndSrcsetAttr(elem){
+    if(elem.dataset.src) useThenRemoveDataAttribute(elem, `src`, elem.dataset.src);
+    if(elem.dataset.srcset) useThenRemoveDataAttribute(elem, `srcset`, elem.dataset.srcset);
+}
+
+function removeLazyClass(elem){
+    elem.classList.remove(`lazy`);
+
+    const childLazyElems = document.querySelectorAll(`.lazy`);
+    if(childLazyElems && childLazyElems.length){
+        childLazyElems.forEach((childElem) => childElem.classList.remove(`lazy`));
     }
 }
