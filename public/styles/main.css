@@ -8,6 +8,8 @@ body *{
 
 .img-container{
     height: 400px;
+    width: 600px;
+    background: #d4d4d4;
 }
 img.lazy{
     height: 100%;
