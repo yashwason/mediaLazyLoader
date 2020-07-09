@@ -51,6 +51,9 @@ function changeElemAttributes(elem){
 
     
     changeSrcAndSrcsetAttr(elem);
+
+    if(elem.dataset.posterSrc) useThenRemoveDataAttribute(elem, `poster`, elem.dataset.posterSrc, `data-poster-src`);
+    if(elem.dataset.lazyAutoplay && (elem.tagName.toLowerCase() === `video` || elem.tagName.toLowerCase() === `audio`)) elem.play();
     
     const childSOURCEElems = elem.querySelectorAll(`source`),
         childIMGElems = elem.querySelectorAll(`img`);
@@ -59,12 +62,12 @@ function changeElemAttributes(elem){
     if(childSOURCEElems.length) childSOURCEElems.forEach((SOURCEElem) => changeSrcAndSrcsetAttr(SOURCEElem));
 }
 
-function useThenRemoveDataAttribute(elem, attr, dataAttr){
+function useThenRemoveDataAttribute(elem, attr, dataAttr, attrName){
     elem.setAttribute(attr, dataAttr);
-    elem.removeAttribute(dataAttr);
+    elem.removeAttribute(attrName);
 }
 
 function changeSrcAndSrcsetAttr(elem){
-    if(elem.dataset.src) useThenRemoveDataAttribute(elem, `src`, elem.dataset.src);
-    if(elem.dataset.srcset) useThenRemoveDataAttribute(elem, `srcset`, elem.dataset.srcset);
+    if(elem.dataset.src) useThenRemoveDataAttribute(elem, `src`, elem.dataset.src, `data-src`);
+    if(elem.dataset.srcset) useThenRemoveDataAttribute(elem, `srcset`, elem.dataset.srcset, `data-srcset`);
 }

@@ -11,16 +11,14 @@ img{
 }
 
 picture,
-.img-container,
-.lazy-bg.lazy{
-    background: #d4d4d4 !important;
-}
-
-picture,
+video,
 .img-container,
 .lazy-bg{
     height: 400px;
     width: 600px;
+}
+.lazy{
+    background: #d4d4d4 !important;
 }
 
 .lazy-bg-1{
