@@ -1,0 +1,14 @@
+body{
+    text-align: center;
+}
+body *{
+    display: block;
+    margin: 20px auto;
+}
+
+.img-container{
+    height: 400px;
+}
+img.lazy{
+    height: 100%;
+}
