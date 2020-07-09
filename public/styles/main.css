@@ -13,7 +13,8 @@ img{
 picture,
 video,
 .img-container,
-.lazy-bg{
+.lazy-bg,
+iframe{
     height: 400px;
     width: 600px;
 }
