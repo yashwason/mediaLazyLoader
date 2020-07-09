@@ -1,16 +1,29 @@
 body{
     text-align: center;
 }
-
-
-picture,
-.img-container{
-    background: #d4d4d4;
+body > *{
     margin: 20px auto;
     display: block;
+}
+
+img{
+    width: 100%;
+}
+
+picture,
+.img-container,
+.lazy-bg.lazy{
+    background: #d4d4d4 !important;
+}
+
+picture,
+.img-container,
+.lazy-bg{
     height: 400px;
     width: 600px;
 }
-img.lazy{
-    width: 100%;
+
+.lazy-bg-1{
+    background-repeat: no-repeat !important;
+    background: url('https://unsplash.it/600/400?random=3');
 }

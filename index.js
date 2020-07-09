@@ -42,12 +42,18 @@ function setupLazyLoading(){
 }
 
 function changeElemAttributes(elem){
-    removeLazyClass(elem);
-    
-    const childSOURCEElems = elem.querySelectorAll(`source`);
-    const childIMGElems = elem.querySelectorAll(`img`);
+    elem.classList.remove(`lazy`);
+
+    const childLazyElems = elem.querySelectorAll(`.lazy`);
+    if(childLazyElems && childLazyElems.length){
+        childLazyElems.forEach((childElem) => childElem.classList.remove(`lazy`));
+    }
+
     
     changeSrcAndSrcsetAttr(elem);
+    
+    const childSOURCEElems = elem.querySelectorAll(`source`),
+        childIMGElems = elem.querySelectorAll(`img`);
 
     if(childIMGElems.length) childIMGElems.forEach((IMGElem) => changeSrcAndSrcsetAttr(IMGElem));
     if(childSOURCEElems.length) childSOURCEElems.forEach((SOURCEElem) => changeSrcAndSrcsetAttr(SOURCEElem));
@@ -61,13 +67,4 @@ function useThenRemoveDataAttribute(elem, attr, dataAttr){
 function changeSrcAndSrcsetAttr(elem){
     if(elem.dataset.src) useThenRemoveDataAttribute(elem, `src`, elem.dataset.src);
     if(elem.dataset.srcset) useThenRemoveDataAttribute(elem, `srcset`, elem.dataset.srcset);
-}
-
-function removeLazyClass(elem){
-    elem.classList.remove(`lazy`);
-
-    const childLazyElems = document.querySelectorAll(`.lazy`);
-    if(childLazyElems && childLazyElems.length){
-        childLazyElems.forEach((childElem) => childElem.classList.remove(`lazy`));
-    }
 }
