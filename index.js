@@ -1,3 +1,5 @@
+import Glide from '@glidejs/glide';
+
 document.onload = setupLazyLoading();
 
 
@@ -42,25 +44,32 @@ function setupLazyLoading(){
 }
 
 function changeElemAttributes(elem){
+    /*
+    removing lazy class, because elements with this class will go through all this lazy loading cycle, and that will fail
+    because we would have removed the 'data-src' and 'data-srcset' attributes in a previous trigger (as resource would have loaded already)
+    */
     elem.classList.remove(`lazy`);
 
-    const childLazyElems = elem.querySelectorAll(`.lazy`);
-    if(childLazyElems && childLazyElems.length){
-        childLazyElems.forEach((childElem) => childElem.classList.remove(`lazy`));
-    }
+    // making sure child <img> and <source> elements don't have this class too. else same problem that's stated in above comment
+    // const childLazyElems = elem.querySelectorAll(`.lazy`);
+    // if(childLazyElems && childLazyElems.length){
+    //     childLazyElems.forEach((childElem) => childElem.classList.remove(`lazy`));
+    // }
 
     
-    changeSrcAndSrcsetAttr(elem);
-
+    changeSrcAndSrcsetAttr(elem); // changing data-src to src and data-srcset to srcset
     if(elem.dataset.posterSrc) useThenRemoveDataAttribute(elem, `poster`, elem.dataset.posterSrc, `data-poster-src`);
     if(elem.dataset.lazyAutoplay && (elem.tagName.toLowerCase() === `video` || elem.tagName.toLowerCase() === `audio`)) elem.play();
     
+
+    // needed for picture, audio and video elements and also sliders and carousels (via JS libraries) that have <source> and <img> as children
     const childSOURCEElems = elem.querySelectorAll(`source`),
         childIMGElems = elem.querySelectorAll(`img`);
 
     if(childIMGElems.length) childIMGElems.forEach((IMGElem) => changeSrcAndSrcsetAttr(IMGElem));
     if(childSOURCEElems.length) childSOURCEElems.forEach((SOURCEElem) => changeSrcAndSrcsetAttr(SOURCEElem));
 }
+
 
 function useThenRemoveDataAttribute(elem, attr, dataAttr, attrName){
     elem.setAttribute(attr, dataAttr);
@@ -71,3 +80,13 @@ function changeSrcAndSrcsetAttr(elem){
     if(elem.dataset.src) useThenRemoveDataAttribute(elem, `src`, elem.dataset.src, `data-src`);
     if(elem.dataset.srcset) useThenRemoveDataAttribute(elem, `srcset`, elem.dataset.srcset, `data-srcset`);
 }
+
+
+new Glide('.slider', {
+    type: 'slider',
+    perView: 4.5,
+    gap: `25px`,
+    focusAt: 0,
+    startAt: 0,
+    autoplay: 3000
+}).mount();

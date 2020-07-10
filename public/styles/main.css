@@ -17,12 +17,17 @@ video,
 iframe{
     height: 400px;
     width: 600px;
-}
-.lazy{
-    background: #d4d4d4 !important;
+    background: #d4d4d4 !important; 
 }
 
 .lazy-bg-1{
     background-repeat: no-repeat !important;
     background: url('https://unsplash.it/600/400?random=3');
+}
+
+.slider{
+    padding: 0 100px;
+}
+.slider .glide__slide *{
+    width: 100%;
 }
