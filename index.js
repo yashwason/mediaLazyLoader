@@ -72,13 +72,19 @@ function changeElemAttributes(elem){
 
 
 function useThenRemoveDataAttribute(elem, attr, dataAttr, attrName){
-    elem.setAttribute(attr, dataAttr);
-    elem.removeAttribute(attrName);
+    if(elemNotDisplayNone(elem)){
+        elem.setAttribute(attr, dataAttr);
+        elem.removeAttribute(attrName);
+    }
 }
 
 function changeSrcAndSrcsetAttr(elem){
     if(elem.dataset.src) useThenRemoveDataAttribute(elem, `src`, elem.dataset.src, `data-src`);
     if(elem.dataset.srcset) useThenRemoveDataAttribute(elem, `srcset`, elem.dataset.srcset, `data-srcset`);
+}
+
+function elemNotDisplayNone(elem){
+    return !Boolean(window.getComputedStyle(elem).display.toLowerCase().trim() === `none`);
 }
 
 
