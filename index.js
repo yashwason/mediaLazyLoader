@@ -51,10 +51,10 @@ function changeElemAttributes(elem){
     elem.classList.remove(`lazy`);
 
     // making sure child <img> and <source> elements don't have this class too. else same problem that's stated in above comment
-    // const childLazyElems = elem.querySelectorAll(`.lazy`);
-    // if(childLazyElems && childLazyElems.length){
-    //     childLazyElems.forEach((childElem) => childElem.classList.remove(`lazy`));
-    // }
+    const childLazyElems = elem.querySelectorAll(`.lazy`);
+    if(childLazyElems && childLazyElems.length){
+        childLazyElems.forEach((childElem) => childElem.classList.remove(`lazy`));
+    }
 
     
     changeSrcAndSrcsetAttr(elem); // changing data-src to src and data-srcset to srcset
